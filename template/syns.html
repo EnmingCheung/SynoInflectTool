@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>No title</title>
+
+      <style type="text/css">
+ html, body {
+      min-height: 100%;
+      }
+      body, div, form, input, p {
+      padding: 150;
+      margin: 70;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      }
+      h1 {
+      font-weight: 400;
+      }
+       h4 {
+      margin: 22px 0 4px;
+      color: #095484;
+      }
+      input[type=button], input[type=submit], input[type=reset] {
+  background-color: #03a0f9;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+        .dropdown{
+ width:1000px;
+ height:50px;
+}
+.dropdown-content{
+  width:1000px;
+  height:500px;
+  overflow-y:auto;
+  border:1px solid #00bfff;
+  border-top:0px;
+  display:none;
+}
+.dropdown-content ul{padding:0px;}
+.dropdown-content li{
+   list-style:none;
+   width:100%;
+   color:#337ab7;
+   background:#fffff;
+   height:25px;
+}
+
+    </style>
+
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function(){
+$('.dropdown').click(function(){
+$('.dropdown-content').fadeToggle();
+});
+$("input:checkbox").click(function() {
+        var output = "";
+        $("input:checked").each(function() {
+            output += $(this).next('span').text() + ", ";
+        });
+        $(".dropdown").val(output.trim().slice(0,-1));
+  });
+});
+
+    </script>
+
+<h1>Synonyms -> Inflections:</h1>
+<h4>Please select the expected synonym by clicking the checkbox.</h4>
+<h4>After finishing selections, you can make changes in the textbox, then click "Inflection" to continue:  </h4>
+<form action="{{ url_for('inflect')}}" method="POST">
+    <input type="submit"  value="Inflection">
+  <input type="textarea" name="inf" rows="2" class="dropdown" placeholder="Click here to select values, or input terms directly"/>
+<div class="dropdown-content">
+<ul>
+  {% for term in synset %}
+        <li><input type="checkbox"><span> {{ term }}</span></li>
+  {% endfor %}
+</ul>
+</div>
+</form>
+
+<form action="{{ url_for('inflect')}}" method="POST" style="margin-top: 500px;">
+    <h4>Inflection results:</h4>
+   <textarea name="text" rows="10" cols="50" class="dropdown"> {{ infl }}</textarea>
+</form>
+
+<form action="/">
+    <input type="submit" value="Back" />
+</form>
+
+</body>
+</html>
